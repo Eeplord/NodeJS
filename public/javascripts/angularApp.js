@@ -159,7 +159,7 @@ app.controller('MainCtrl', [
 '$scope',
 'posts',
 'auth',
-function($scope, posts) {
+function($scope, posts, auth) {
     $scope.posts = posts.posts;
     $scope.isLoggedIn = auth.isLoggedIn;
 
@@ -183,7 +183,7 @@ app.controller('PostsCtrl', [
 'posts',
 'post',
 'auth',
-function($scope, posts, post){
+function($scope, posts, post, auth){
     $scope.post = post;
     $scope.isLoggedIn = auth.isLoggedIn;
 
