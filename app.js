@@ -13,7 +13,7 @@ require('./models/Posts');
 require('./models/Comments');
 require('./models/Users');
 require('./config/passport');
-mongoose.connect('mongodb://localhost/flapper-news');
+mongoose.connect('mongodb://localhost/Readeet');
 
 var routes = require('./routes/index');
 var users  = require('./routes/users');
