@@ -6,6 +6,19 @@ var favicon      = require('serve-favicon');
 var logger       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
+var fs           = require('fs');
+var https        = require('https');
+var http         = require('http');
+
+var key          = fs.readFileSync('./ssl/key.pem');
+var cert         = fs.readFileSync('./ssl/cert.pem');
+var options = {
+    key: key,
+    cert: cert
+};
+
+var PORT = 8000;
+var HOST = 'localhost';
 
 var mongoose = require('mongoose');
 var passport = require('passport');
@@ -67,5 +80,10 @@ app.use(function(err, req, res, next) {
   });
 });
 
+// create http service
+http.createServer(app).listen(8080);
+
+// create https service identical to the http service
+https.createServer(options, app).listen(8443);
 
 module.exports = app;
