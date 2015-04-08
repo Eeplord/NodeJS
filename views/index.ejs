@@ -8,7 +8,7 @@
     <style> .glyphicon-thumbs-up { cursor:pointer } </style>
   </head>
   
-  <body ng-app="flapperNews">
+  <body ng-app="readeet">
 
     <nav class="navbar navbar-default pull-right" ng-controller="NavCtrl">
       <ul class="nav navbar-nav">
@@ -86,7 +86,7 @@
       <div ng-repeat="comment in post.comments | orderBy:'-upvotes'">
 	<span class="glyphicon glyphicon-thumbs-up"
 	      ng-click="incrementUpvotes(comment)"></span>
-	{{comment.upvotes}} - by {{comment.author}}
+	{{comment.upvotes}} - by <a>{{comment.author}}</a>
 	<span style="font-size:20px; margin-left:10px;">
 	  {{comment.body}}
 	</span>
