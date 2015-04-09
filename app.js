@@ -28,8 +28,9 @@ require('./models/Users');
 require('./config/passport');
 mongoose.connect('mongodb://localhost/Readeet/data');
 
-var routes = require('./routes/index');
-var users  = require('./routes/users');
+var routes     = require('./routes/index');
+var filesystem = require('./routes/filesystem');
+var users      = require('./routes/users');
 
 var app = express();
 
@@ -47,6 +48,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 
 app.use('/', routes);
+app.use('/filesystem', filesystem);
 app.use('/users', users);
 
 // catch 404 and forward to error handler
