@@ -1,6 +1,6 @@
 // public/javascripts/filesystem.js
 
-var app = angular.module('fileBrowserApp', ['ngRoute', 'jsTree.directive'])
+var app = angular.module('fileBrowserApp', ['ngRoute', 'jsTree.directive']);
 
 app.config([
 '$routeProvider',
@@ -8,13 +8,13 @@ function($routeProvider) {
     
     $routeProvider
     
-	.when('/filesystem', {
+	.when('/', {
 	    templateUrl: '../partials/filesystem.html',
 	    controller: 'MainCtrl'
 	})
 
 	.otherwise({
-	    redirectTo: '/filesystem'
+	    redirectTo: '/'
 	});
 }]);
 
@@ -39,11 +39,11 @@ app.controller('MainCtrl', ['$scope', 'FetchFileFactory', function($scope, Fetch
 		if (typeof _d == 'object') {
 		    _d = JSON.stringify(_d, undefined, 2);
 		}
-		$scope.fileViewer = _d
+		$scope.fileViewer = _d;
 	    });
 	} else {
 	    $scope.$apply(function() {
-		$scope.fileViewer = 'Please select a file to view its contents':
+		$scope.fileViewer = 'Please select a file to view its contents';
 	    });
 	}
     };
