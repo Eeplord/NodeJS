@@ -18,11 +18,12 @@ function($routeProvider) {
 	});
 }]);
 
-app.factory('FetchFileFactory', ['$http', function($http) {
+app.factory('FetchFileFactory', ['$http', 'auth', function($http, auth) {
     var _factory = {};
 
     _factory.fetchFile = function(file) {
-	return $http.get('/filesystem/api/resource?resource=' + encodeURIComponent(file));
+	return $http.get('/filesystem/api/resource?resource=' + encodeURIComponent(file), {
+	    headers: {Authorization: 'Bearer ' + auth.getToken()}});
     };
 
     return _factory;

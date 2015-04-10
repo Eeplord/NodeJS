@@ -3,9 +3,12 @@
 // MODULES =================================================
 
 var express = require('express');
-var router = express.Router();
-var fs = require('fs');
-var path = require('path');
+var router  = express.Router();
+var fs      = require('fs');
+var path    = require('path');
+
+var jwt     = require('express-jwt');
+var auth    = jwt({secret: 'SECRET', userProperty: 'payload'});
 
 // HTTP REQUESTS ===========================================
 
@@ -31,7 +34,7 @@ router.get('/api/tree', function(req, res) {
 });
 
 // serve a resource
-router.get('/api/resource', function(req, res) {
+router.get('/api/resource', auth, function(req, res) {
     res.send(fs.readFileSync(req.query.resource, 'UTF-8'));
 });
 
