@@ -24,6 +24,6 @@
     "gulp-jshint": "^1.10.0",
     "gulp-livereload": "^3.8.0",
     "gulp-nodemon": "^2.0.2",
-    "gulp-watch": "^4.2.4"
+    "gulp-watch": "0.7.1"
   }
 }
