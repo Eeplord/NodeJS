@@ -22,29 +22,29 @@ var HOST = 'localhost';
 
 var mongoose = require('mongoose');
 var passport = require('passport');
-require('./models/Posts');
-require('./models/Comments');
-require('./models/Users');
-require('./config/passport');
+require('../models/Posts');
+require('../models/Comments');
+require('../models/Users');
+require('../config/passport');
 mongoose.connect('mongodb://localhost/Readeet/data');
 
-var routes     = require('./routes/index');
-var filesystem = require('./routes/filesystem');
-var users      = require('./routes/users');
+var routes     = require('../routes/index');
+var filesystem = require('../routes/filesystem');
+var users      = require('../routes/users');
 
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, '/../views'));
 app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
-app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(favicon(__dirname + '/../public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/../public')));
 app.use(passport.initialize());
 
 app.use('/', routes);

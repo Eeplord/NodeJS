@@ -9,6 +9,11 @@ var path = require('path');
 
 // HTTP REQUESTS ===========================================
 
+// filesystem main page
+router.get('/', function(req, res) {
+    res.render('filesystem');
+});
+
 // serve the tree
 router.get('/api/tree', function(req, res) {
     var _p;

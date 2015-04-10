@@ -1,3 +1,5 @@
+// public/javascripts/angularApp.js
+
 var app = angular.module('readeet', ['ui.router']);
 
 app.config([
