@@ -1,4 +1,6 @@
-// routes/index.js
+// server/routes/index.js
+
+// MODULES =================================================
 
 var express  = require('express');
 var router   = express.Router();
@@ -11,6 +13,8 @@ var auth     = jwt({secret: 'SECRET', userProperty: 'payload'});
 var Post     = mongoose.model('Post');
 var Comment  = mongoose.model('Comment');
 var User     = mongoose.model('User');
+
+// HTTP REQUESTS ===========================================
 
 // homepage
 router.get('/', function(req, res, next) {

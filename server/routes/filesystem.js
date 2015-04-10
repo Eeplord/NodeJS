@@ -1,4 +1,4 @@
-// routes/filesystem.js
+// server/routes/filesystem.js
 
 // MODULES =================================================
 
