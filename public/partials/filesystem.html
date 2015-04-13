@@ -1,5 +1,5 @@
 <div ng-controller="MainCtrl">
-  <div class="row">
+  <div class="row" ng-show="isLoggedIn()">
     <div class="col-md-4 tree-browser">
       <js-tree tree-events="select_node:nodeSelected"
       tree-ajax="/filesystem/api/tree"></js-tree>
@@ -7,5 +7,9 @@
     <div class="col-md-8 file-viewer">
       <pre><code>{{fileViewer}}</pre></code>
     </div>
+  </div>
+  <div ng-hide="isLoggedIn()">
+    <h3>You need to <a href="/#/login"> Log In</a>
+    or <a href="/#/register">Register</a> before you can view files.</h3>
   </div>
 </div>

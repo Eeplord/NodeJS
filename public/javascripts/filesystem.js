@@ -29,8 +29,9 @@ app.factory('FetchFileFactory', ['$http', 'auth', function($http, auth) {
     return _factory;
 }]);
 
-app.controller('MainCtrl', ['$scope', 'FetchFileFactory', function($scope, FetchFileFactory) {
+app.controller('MainCtrl', ['$scope', 'FetchFileFactory', 'auth', function($scope, FetchFileFactory, auth) {
     $scope.fileViewer = 'Please select a file to view its contents';
+    $scope.isLoggedIn = auth.isLoggedIn;
 
     $scope.nodeSelected = function(e, data) {
 	var _l = data.node.li_attr;
