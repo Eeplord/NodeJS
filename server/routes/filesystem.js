@@ -11,6 +11,8 @@ var mongoose = require('mongoose');
 var jwt      = require('express-jwt');
 var auth     = jwt({secret: 'SECRET', userProperty: 'payload'});
 
+var User     = mongoose.model('User');
+
 // HTTP REQUESTS ===========================================
 
 // filesystem main page
@@ -38,6 +40,22 @@ router.get('/api/tree', function(req, res) {
 router.get('/api/resource', auth, function(req, res) {
     res.send(fs.readFileSync(req.query.resource, 'UTF-8'));
 });
+
+// create a resource relative to user's cwd
+router.post('/api/resource', auth, function(req, res) {
+    res.send(req.query.resource);
+});
+
+// get current working directoy for user based on auth token
+router.get('/api/cwd', auth, function(req, res) {
+    User.findOne({ 'username': req.payload.username }, function(err, user) {
+	if (err){ return next(err); }
+
+	res.send(user.cwd);
+    });
+});
+
+
 
 // FUNCTIONS ===============================================
 

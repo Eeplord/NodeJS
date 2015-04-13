@@ -1,4 +1,4 @@
-# httpRequests.py
+# python/readeet_api.py
 
 import sys
 import requests
@@ -75,9 +75,6 @@ LOGIN = {
     'password': '123'
 }
 
-def test_login():
-    print(json.dumps(login(LOGIN), indent=1))
-
 def test_getAllPosts():
     for post in getAllPosts():
         print(json.dumps(post, indent=1))
@@ -117,14 +114,13 @@ def test_register():
 
 # TEST AREA : HARDHAT REQUIRED =============================
 
-
+"""
 print('\n<-- getAllPosts() Test: -->')
 test_getAllPosts()
 
 print('\n<-- getPost(id) Test: -->')
 test_getPost()
 
-"""
 print('\n<-- login(login) Test: -->')
 token = test_login()
 
