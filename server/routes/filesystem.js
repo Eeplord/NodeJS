@@ -2,13 +2,14 @@
 
 // MODULES =================================================
 
-var express = require('express');
-var router  = express.Router();
-var fs      = require('fs');
-var path    = require('path');
+var express  = require('express');
+var router   = express.Router();
+var fs       = require('fs');
+var path     = require('path');
+var mongoose = require('mongoose');
 
-var jwt     = require('express-jwt');
-var auth    = jwt({secret: 'SECRET', userProperty: 'payload'});
+var jwt      = require('express-jwt');
+var auth     = jwt({secret: 'SECRET', userProperty: 'payload'});
 
 // HTTP REQUESTS ===========================================
 
@@ -21,7 +22,7 @@ router.get('/', function(req, res) {
 router.get('/api/tree', function(req, res) {
     var _p;
     if (req.query.id == 1) {
-	_p = path.resolve(__dirname, '../..', 'node_modules');
+	_p = path.resolve(__dirname, '../..');
 	processReq(_p, res);
     } else {
 	if (req.query.id) {
