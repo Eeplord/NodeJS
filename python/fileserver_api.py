@@ -20,8 +20,8 @@ def getCWD(token):
 
 def getResource(token, resource):
     auth = createAuthHeader(token)
-    url = DOMAIN + '/resource?resource=' + resource
-    r = requests.delete(url, headers=auth)
+    url = DOMAIN + '/file?resource=' + resource
+    r = requests.put(url, headers=auth)
     return r.text
 
 # HELPERS ==================================================
@@ -46,7 +46,7 @@ def test_getCWD(token):
     print(getCWD(token))
 
 def test_getResource(token):
-    print(getResource(token, '/fast/FrqU/Cncs/TestFolder'))
+    print(getResource(token, '/fast/FrqU/Cncs/TestFolder/TestFile'))
 
 # TEST AREA ================================================
 

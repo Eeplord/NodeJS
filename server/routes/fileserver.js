@@ -34,6 +34,26 @@ router.get('/api/resource', auth, function(req, res) {
     }
 });
 
+// create a directory (mkdir)
+router.put('/api/directory', auth, function(req, res) {
+    ensureExists(req.query.resource, function(err) {
+	if (err) {
+	    console.log('vvv fileserver/api/resource : ' + err.message);
+	    res.status(400).send('Something went wrong');
+	} else {
+	    res.json({ message : 'Directory created successfully' });
+	}
+    });
+});
+
+// create a file
+router.put('/api/file', auth, function(req, res) {
+    fs.appendFile(req.query.resource, '', function(err) {
+	if (err) throw err;
+	res.json({ message : 'File created successfully' });
+    });
+});
+
 // delete file/directory (rm/rmdir)
 router.delete('/api/resource', auth, function(req, res) {
     try {
@@ -61,6 +81,7 @@ router.delete('/api/resource', auth, function(req, res) {
 
 // FUNCTIONS ===============================================
 
+// create an array of json representations of files/directories at given path
 function processReq(_p, res) {
     var resp = [];
     fs.readdir(_p, function(err, list) {
@@ -71,6 +92,7 @@ function processReq(_p, res) {
     });
 }
 
+// create json representation of file/directory
 function processNode(_p, f) {
     var s = fs.statSync(path.join(_p, f));
     return {
@@ -91,6 +113,21 @@ function processNode(_p, f) {
     };
 }
 
+// creates directory if it does not exist
+function ensureExists(path, mask, cb) {
+    if (typeof mask == 'function') {             // allow the 'mask' parameter to be optional
+	cb = mask;
+	mask = 0777;
+    }
+    fs.mkdir(path, mask, function(err) {
+	if (err) {
+	    if (err.code == 'EEXIST') cb(null); // ignore folder already exists error
+	    else cb(err);                       // something else went wrong
+	} else cb(null);                        // successfully created folder
+    });
+}
+
+// deletes directory that contains files (rm -rf)
 function rmdir(path, callback) {
     fs.readdir(path, function(err, files) {
 	if(err) {
