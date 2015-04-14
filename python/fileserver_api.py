@@ -22,10 +22,10 @@ def mkdir(directory, token):
     r = requests.put(url, headers=auth)
     return json.loads(r.text)
 
-def mkfile(file, token):
+def mkfile(file, body, token):
     auth = createAuthHeader(token)
     url = DOMAIN + '/file?resource=' + file
-    r = requests.put(url, headers=auth)
+    r = requests.put(url, data=body, headers=auth)
     return json.loads(r.text)
 
 def rm(resource, token):
@@ -33,6 +33,17 @@ def rm(resource, token):
     url = DOMAIN + '/resource?resource=' + resource
     r = requests.delete(url, headers=auth)
     return json.loads(r.text)
+
+def copy(file, token):
+    auth = createAuthHeader(token)
+    # GET file
+    # create json version of file
+    # PUT file
+
+def mv(file, token):
+    auth = createAuthHeader(token)
+    # copy file to new location
+    # DELETE file
 
 # HELPERS ==================================================
 
@@ -47,6 +58,10 @@ LOGIN = {
     'password': 'qfnk2'
 }
 
+body = {
+    'payload' : 'test'
+}
+
 def test_login():
     token = login(LOGIN)
     print(token)
@@ -59,7 +74,7 @@ def test_mkdir(token):
     print(json.dumps(mkdir('/fast/FrqU/Cncs/TestFolder', token), indent=1))
 
 def test_mkfile(token):
-    print(json.dumps(mkfile('/fast/FrqU/Cncs/TestFolder/TestFile', token), indent=1))
+    print(json.dumps(mkfile('/fast/FrqU/Cncs/TestFolder/TestFile', body, token), indent=1))
 
 def test_rm(token):
     print(json.dumps(rm('/fast/FrqU/Cncs/TestFolder', token), indent=1))

@@ -48,8 +48,11 @@ router.put('/api/directory', auth, function(req, res) {
 
 // create a file
 router.put('/api/file', auth, function(req, res) {
-    fs.appendFile(req.query.resource, '', function(err) {
-	if (err) throw err;
+    fs.appendFile(req.query.resource, req.body.payload, function(err) {
+	if (err) {
+	    console.log('vvv fileserver/api/file : ' + err.message);
+	    res.status(400).send('Something went wrong');
+	}
 	res.json({ message : 'File created successfully' });
     });
 });
@@ -73,7 +76,7 @@ router.delete('/api/resource', auth, function(req, res) {
 	    res.status(404).send('Not a file or directory');
 	}
     } catch (err) {
-	console.log('vvv fileserver/api/resource : ' + err.message);
+	console.log('vvv fileserver/api/directory : ' + err.message);
 	res.status(404).send('Cannot find resource');
     }
 });
