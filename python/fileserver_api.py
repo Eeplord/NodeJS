@@ -7,7 +7,7 @@ import urllib
 
 from readeet_api import login
 
-DOMAIN = 'http://star.u.cb.icmanage.com:8080/filesystem/api'
+DOMAIN = 'http://star.u.cb.icmanage.com:8080/fileserver/api'
 
 
 # HTTP REQUESTS ============================================
@@ -20,8 +20,8 @@ def getCWD(token):
 
 def getResource(token, resource):
     auth = createAuthHeader(token)
-    url = DOMAIN + '/resource?resource=' + getCWD(token) + resource
-    r = requests.post(url, headers=auth)
+    url = DOMAIN + '/resource?resource=' + resource
+    r = requests.delete(url, headers=auth)
     return r.text
 
 # HELPERS ==================================================
@@ -46,15 +46,12 @@ def test_getCWD(token):
     print(getCWD(token))
 
 def test_getResource(token):
-    print(getResource(token, 'fast'))
+    print(getResource(token, '/fast/FrqU/Cncs/TestFolder'))
 
 # TEST AREA ================================================
 
 print('\n<-- login(login) Test: -->')
 token = test_login()
-
-print('\n<-- getCWD(token) Test: -->')
-test_getCWD(token)
 
 print('\n<-- getResource(token, resource) Test: -->')
 test_getResource(token)
