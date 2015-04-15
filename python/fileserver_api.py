@@ -34,16 +34,18 @@ def rm(resource, token):
     r = requests.delete(url, headers=auth)
     return json.loads(r.text)
 
-def copy(file, token):
-    auth = createAuthHeader(token)
-    # GET file
-    # create json version of file
-    # PUT file
+def copy(file, copy, token):
+    r = getResource(file, token)
+    body = {
+        'payload' : r['content']
+    }
+    return mkfile(copy, body, token)
 
-def mv(file, token):
-    auth = createAuthHeader(token)
-    # copy file to new location
-    # DELETE file
+def move(file, newFile, token):
+    messages = []
+    messages.append(copy(file, newFile, token))
+    messages.append(rm(file, token))
+    return messages
 
 # HELPERS ==================================================
 
@@ -79,25 +81,37 @@ def test_mkfile(token):
 def test_rm(token):
     print(json.dumps(rm('/fast/FrqU/Cncs/TestFolder', token), indent=1))
 
+def test_copy(token):
+    print(json.dumps(copy('/fast/FrqU/Cncs/TestFolder/TestFile', '/fast/FrqU/Cncs/TestFolder/CopyFile', token), indent=1))
+
+def test_move(token):
+    print(json.dumps(move('/fast/FrqU/Cncs/TestFolder/TestFile', '/fast/FrqU/Cncs/TestFolder/MoveFile', token), indent=1))
+
 # TEST AREA ================================================
 
 print('\n<-- login(login) Test: -->')
 token = test_login()
 
-print('\n<-- getResource(resource, token) Test: -->')
-test_getResource(token)
+#print('\n<-- getResource(resource, token) Test: -->')
+#test_getResource(token)
 
-print('\n<-- mkdir(directory, token) Test: -->')
-test_mkdir(token)
+#print('\n<-- mkdir(directory, token) Test: -->')
+#test_mkdir(token)
 
 print('\n<-- mkfile(file, token) Test: -->')
 test_mkfile(token)
 
-print('\n<-- getResource(resource, token) Test: -->')
-test_getResource(token)
+#print('\n<-- getResource(resource, token) Test: -->')
+#test_getResource(token)
 
-print('\n<-- rm(resource, token) Test: -->')
-test_rm(token)
+#print('\n<-- rm(resource, token) Test: -->')
+#test_rm(token)
 
-print('\n<-- getResource(resource, token) Test: -->')
-test_getResource(token)
+#print('\n<-- getResource(resource, token) Test: -->')
+#test_getResource(token)
+
+print('\n<-- copy(file, copy, token) Test: -->')
+test_copy(token)
+
+print('\n<-- move(file, newFile, token) Test: -->')
+test_move(token)

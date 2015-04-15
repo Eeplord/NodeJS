@@ -48,7 +48,7 @@ router.put('/api/directory', auth, function(req, res) {
 
 // create a file
 router.put('/api/file', auth, function(req, res) {
-    fs.appendFile(req.query.resource, req.body.payload, function(err) {
+    fs.writeFile(req.query.resource, req.body.payload, function(err) {
 	if (err) {
 	    console.log('vvv fileserver/api/file : ' + err.message);
 	    res.status(400).send('Something went wrong');
@@ -97,12 +97,13 @@ function processReq(_p, res) {
 
 // create json representation of file/directory
 function processNode(_p, f) {
-    var s = fs.statSync(path.join(_p, f));
-    return {
+    var filepath = path.join(_p, f);
+    var s = fs.statSync(filepath);
+    var message = {
 	'id': path.join(_p, f),              // ID of the node
 	'text': f,                           // Text appearing on the node
 	'icon': s.isDirectory() ? 'jstree-custom-folder': 'jstree-custom-file', // set custom icon depending
-	                                                                        // on type of node
+                                                                        	// on type of node
 	'state': {
 	    'opened': false,                 // should node be opened on load?
 	    'disabled': false,               // is the node disabled?
@@ -114,6 +115,14 @@ function processNode(_p, f) {
 	},
 	'children': s.isDirectory()          // does this node have children?
     };
+
+    if(!s.isDirectory()) {
+	content = fs.readFileSync(filepath, 'utf8');
+	message.content = content;
+	return message;
+    } else {
+	return message;
+    }
 }
 
 // creates directory if it does not exist
@@ -124,7 +133,7 @@ function ensureExists(path, mask, cb) {
     }
     fs.mkdir(path, mask, function(err) {
 	if (err) {
-	    if (err.code == 'EEXIST') cb(null); // ignore folder already exists error
+	    if (err.code == 'EEXIST') cb(null); // ignore 'folder already exists' error
 	    else cb(err);                       // something else went wrong
 	} else cb(null);                        // successfully created folder
     });
@@ -142,17 +151,17 @@ function rmdir(path, callback) {
 	count = 0,
 	folderDone = function(err) {
 	    count++;
-	    // If we cleaned out all the files, continue
+	    // if all the files are cleand out, continue
 	    if( count >= wait || err) {
 		fs.rmdir(path,callback);
 	    }
 	};
-	// Empty directory to bail early
+	// empty directory to bail early
 	if(!wait) {
 	    folderDone();
 	    return;
 	}
-	// Remove one or more trailing slash to keep from doubling up
+	// remove one or more trailing slash to keep from doubling up
 	path = path.replace(/\/+$/,"");
 	files.forEach(function(file) {
 	    var curPath = path + "/" + file;
