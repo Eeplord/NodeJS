@@ -42,9 +42,9 @@ def copy(file, copy, token):
     return mkfile(copy, body, token)
 
 def move(file, newFile, token):
-    messages = []
-    messages.append(copy(file, newFile, token))
-    messages.append(rm(file, token))
+    messages = [2]
+    messages[0] = (copy(file, newFile, token))
+    messages[1] = (rm(file, token))
     return messages
 
 # HELPERS ==================================================
