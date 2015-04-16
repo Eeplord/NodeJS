@@ -4,36 +4,39 @@ import sys
 import requests
 import json
 
-from readeet_api import login
-
-DOMAIN = 'http://star.u.cb.icmanage.com:8080/fileserver/api'
+DOMAIN = 'http://star.u.cb.icmanage.com:8080'
 
 # HTTP REQUESTS ============================================
 
+# returns list of jsons of everything directly in directory or json representation of file
 def getResource(resource, token):
     auth = createAuthHeader(token)
-    url = DOMAIN + '/resource?resource=' + resource
+    url = DOMAIN + '/filesystem/api/resource?resource=' + resource
     r = requests.get(url, headers=auth)
     return json.loads(r.text)
 
+# creates directory
 def mkdir(directory, token):
     auth = createAuthHeader(token)
-    url = DOMAIN + '/directory?resource=' + directory
+    url = DOMAIN + '/filesystem/api/directory?resource=' + directory
     r = requests.put(url, headers=auth)
     return json.loads(r.text)
 
+# creates emtpy file with given content
 def mkfile(file, body, token):
     auth = createAuthHeader(token)
-    url = DOMAIN + '/file?resource=' + file
+    url = DOMAIN + '/filesystem/api/file?resource=' + file
     r = requests.put(url, data=body, headers=auth)
     return json.loads(r.text)
 
+# removes resource
 def rm(resource, token):
     auth = createAuthHeader(token)
-    url = DOMAIN + '/resource?resource=' + resource
+    url = DOMAIN + '/filesystem/api/resource?resource=' + resource
     r = requests.delete(url, headers=auth)
     return json.loads(r.text)
 
+# copies file
 def copy(file, copy, token):
     r = getResource(file, token)
     body = {
@@ -41,14 +44,22 @@ def copy(file, copy, token):
     }
     return mkfile(copy, body, token)
 
+# moves/renames file
 def move(file, newFile, token):
-    messages = [2]
-    messages[0] = (copy(file, newFile, token))
-    messages[1] = (rm(file, token))
+    messages = []
+    messages.append(copy(file, newFile, token))
+    messages.append(rm(file, token))
     return messages
+
+# login and get authentication token
+def login(login):
+    url = DOMAIN + '/login'
+    r = requests.post(url, data=login)
+    return json.loads(r.text)['token']
 
 # HELPERS ==================================================
 
+# create authentication header
 def createAuthHeader(token):
     auth = {'Authorization': 'Bearer ' + token}
     return auth

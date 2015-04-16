@@ -63,7 +63,7 @@ def login(login):
 
 # HELPERS ==================================================
 
-# create jwt for authentication in request header
+# create authentication header
 def createAuthHeader(token):
     auth = {'Authorization': 'Bearer ' + token}
     return auth
