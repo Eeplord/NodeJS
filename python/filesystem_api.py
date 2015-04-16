@@ -1,4 +1,4 @@
-# python/fileserver_api.py
+# python/filesystem_api.py
 
 import sys
 import requests
@@ -12,28 +12,28 @@ DOMAIN = 'http://star.u.cb.icmanage.com:8080'
 def getResource(resource, token):
     auth = createAuthHeader(token)
     url = DOMAIN + '/filesystem/api/resource?resource=' + resource
-    r = requests.get(url, headers=auth)
+    r = requests.get(url, headers=auth, verify=False)
     return json.loads(r.text)
 
 # creates directory
 def mkdir(directory, token):
     auth = createAuthHeader(token)
     url = DOMAIN + '/filesystem/api/directory?resource=' + directory
-    r = requests.put(url, headers=auth)
+    r = requests.put(url, headers=auth, verify=False)
     return json.loads(r.text)
 
 # creates emtpy file with given content
 def mkfile(file, body, token):
     auth = createAuthHeader(token)
     url = DOMAIN + '/filesystem/api/file?resource=' + file
-    r = requests.put(url, data=body, headers=auth)
+    r = requests.put(url, data=body, headers=auth, verify=False)
     return json.loads(r.text)
 
 # removes resource
 def rm(resource, token):
     auth = createAuthHeader(token)
     url = DOMAIN + '/filesystem/api/resource?resource=' + resource
-    r = requests.delete(url, headers=auth)
+    r = requests.delete(url, headers=auth, verify=False)
     return json.loads(r.text)
 
 # copies file
@@ -54,7 +54,7 @@ def move(file, newFile, token):
 # login and get authentication token
 def login(login):
     url = DOMAIN + '/login'
-    r = requests.post(url, data=login)
+    r = requests.post(url, data=login, verify=False)
     return json.loads(r.text)['token']
 
 # HELPERS ==================================================
